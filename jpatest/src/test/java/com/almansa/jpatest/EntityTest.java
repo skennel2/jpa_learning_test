@@ -42,7 +42,8 @@ public class EntityTest {
 
 		assertEquals(true, Objects.isNull(employee.getId()));
 		entityManager.persist(employee);
-
+		entityManager.flush();
+		
 		// @GenerateValue 어노테이션으로 인해 영속상태로 전환된 엔티티의 Id값이 채워졌다.
 		assertEquals(true, Objects.nonNull(employee.getId()));
 	}
@@ -56,6 +57,10 @@ public class EntityTest {
 		employee.setLastName("Yunsu");
 
 		entityManager.persist(employee);
+		
+		// 아래구문을 제외하니까 예외가 발생하지 않을때가 있다.
+		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.	
+		entityManager.flush();
 	}
 
 	@Test
