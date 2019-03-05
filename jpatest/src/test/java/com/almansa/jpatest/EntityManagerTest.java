@@ -24,7 +24,7 @@ import com.almansa.jpatest.testentity.Employee;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class, loader = AnnotationConfigContextLoader.class)
 @Transactional
-public class EntityTest {
+public class EntityManagerTest {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -41,11 +41,13 @@ public class EntityTest {
 		employee.setLastName("Yunsu");
 
 		assertEquals(true, Objects.isNull(employee.getId()));
-		entityManager.persist(employee);
-		entityManager.flush();
 		
-		// @GenerateValue 어노테이션으로 인해 영속상태로 전환된 엔티티의 Id값이 채워졌다.
+		// 아래 시점에 시퀀스테이블에서 새로은 PK값을 조회해 엔티티에 채워넣는다.  
+		entityManager.persist(employee);		
 		assertEquals(true, Objects.nonNull(employee.getId()));
+		
+		// 실제 Insert구문이 날라간다.
+		entityManager.flush();
 	}
 
 	@Test(expected = PersistenceException.class)
@@ -57,9 +59,9 @@ public class EntityTest {
 		employee.setLastName("Yunsu");
 
 		entityManager.persist(employee);
-		
+
 		// 아래구문을 제외하니까 예외가 발생하지 않을때가 있다.
-		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.	
+		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.
 		entityManager.flush();
 	}
 
@@ -96,12 +98,12 @@ public class EntityTest {
 				.createQuery("SELECT a FROM Employee a Where a.firstName = :firstName", Employee.class);
 		query.setParameter("firstName", "Na");
 
-		// 실제 데이터베이스에서 가져온 것은 2개지만 getSingleResult 호출.
-		Employee singleResult = query.getSingleResult();
+		// 실제 데이터베이스에서 가져온 것은 2개지만 getSingleResult 호출하니 NonUniqueResultException을 던진다.
+		query.getSingleResult();
 	}
-	
+
 	@Test
-	public void 하나의_TypedQuery로_여러번의_결과리턴_메소드호출() {
+	public void 하나의_TypedQuery인스턴스로_여러번의_결과리턴_메소드호출() {
 		Employee employee = new Employee();
 		employee.setFirstName("Na");
 		employee.setLastName("Yunsu");
@@ -118,8 +120,8 @@ public class EntityTest {
 
 		List<Employee> resultList1 = query.getResultList();
 		assertEquals(2, resultList1.size());
-		
-		// 하나의 Query 인스턴스로 결과리턴 메소드를 여러번 호출하여도 문제없다.
+
+		// 하나의 Query 인스턴스로 결과리턴 메소드를 여러번 호출하여도 문제없으며 결과도 동일하다
 		List<Employee> resultList = query.getResultList();
 		assertEquals(2, resultList.size());
 	}
