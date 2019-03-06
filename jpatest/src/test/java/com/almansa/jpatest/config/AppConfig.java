@@ -1,4 +1,4 @@
-package com.almansa.jpatest;
+package com.almansa.jpatest.config;
 
 import java.util.Properties;
 
