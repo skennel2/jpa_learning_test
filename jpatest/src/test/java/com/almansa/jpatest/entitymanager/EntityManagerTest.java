@@ -18,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 
-import com.almansa.jpatest.AppConfig;
+import com.almansa.jpatest.config.AppConfig;
 
 // 이 어노테이션이 없으면 EntityManager가 로드되지 않는다.
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -205,5 +205,21 @@ public class EntityManagerTest {
 		// insert구문이 정상적으로 날아간다.
 		// 병합은 준영속, 비영속을 신경쓰지 않는다. 
 		entityManager.flush();
+	}
+	
+	@Test
+	public void detach후_update감지_실험() {
+		Student student = new Student();
+		student.setFirstName("Na");
+		student.setLastName("Yunsu");
+		
+		entityManager.persist(student);
+		entityManager.flush();
+		
+		entityManager.detach(student);		
+		student.setLastName("Jinsu");
+		
+		Student studentGet = entityManager.find(Student.class, student.getId());		
+		assertEquals("Yunsu", studentGet.getLastName());
 	}
 }
