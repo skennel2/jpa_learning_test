@@ -62,7 +62,7 @@ public class EntityManagerTest {
 		entityManager.persist(employee);
 
 		// 아래구문을 제외하니까 예외가 발생하지 않는다.
-		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.		
+		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.
 		entityManager.flush();
 	}
 
@@ -126,37 +126,72 @@ public class EntityManagerTest {
 		List<Employee> resultList = query.getResultList();
 		assertEquals(2, resultList.size());
 	}
-	
+
 	@Test
-	public void paging기법_으로_데이터가져오기() {
+	public void paging기법으로_데이터가져오기() {
 		Employee employee = new Employee();
 		employee.setFirstName("Na");
 		employee.setLastName("Yunsu");
 		entityManager.persist(employee);
-		
+
 		Employee employee2 = new Employee();
 		employee2.setFirstName("Na");
 		employee2.setLastName("Jinsu");
-		entityManager.persist(employee2);		
-		
+		entityManager.persist(employee2);
+
 		Employee employee3 = new Employee();
 		employee3.setFirstName("Kim");
 		employee3.setLastName("Yunmi");
 		entityManager.persist(employee3);
-		
+
 		Employee employee4 = new Employee();
 		employee4.setFirstName("Na");
 		employee4.setLastName("Jangsu");
-		entityManager.persist(employee4);		
-		
+		entityManager.persist(employee4);
+
+		// fluent스타일의 API를 제공한다.
 		TypedQuery<Employee> query = entityManager
 				.createQuery("SELECT a FROM Employee a Where a.firstName = :firstName", Employee.class)
 				.setParameter("firstName", "Na")
 				.setFirstResult(1)
-				.setMaxResults(2);			
+				.setMaxResults(2);
 		List<Employee> employees = query.getResultList();
-		
+
 		assertEquals("Jinsu", employees.get(0).getLastName());
 		assertEquals("Jangsu", employees.get(1).getLastName());
+	}
+
+	@Test
+	public void 엔티티의_영속상태_변경시키기() {
+		// 비영속. 순수 자바객체
+		Employee employee = new Employee();
+		employee.setFirstName("Na");
+		employee.setLastName("Yunsu");
+
+		// 영속상태. Id가 채워졌다.
+		entityManager.persist(employee);
+		assertEquals(true, Objects.nonNull(employee.getId()));
+
+		// 준영속상태. Id는 계속 남아있다. 
+		entityManager.detach(employee);
+		assertEquals(true, Objects.nonNull(employee.getId()));
+		employee.setLastName("Jinsu");
+		
+		// 영속상태. 준영속상태의 엔티티를 다시 영속상태로 만든다.
+		entityManager.merge(employee);		
+		entityManager.flush();
+	}
+	
+	@Test
+	public void 비영속객체를_merge시킨다면() {
+		// 비영속. 순수 자바객체
+		Employee employee = new Employee();
+		employee.setFirstName("Na");
+		employee.setLastName("Yunsu");
+
+		entityManager.merge(employee);			
+		
+		// insert구문이 정상적으로 날아간다.
+		entityManager.flush();
 	}
 }
