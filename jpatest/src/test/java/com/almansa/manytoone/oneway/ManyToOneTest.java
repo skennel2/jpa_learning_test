@@ -38,22 +38,23 @@ public class ManyToOneTest {
 
 	@Test
 	public void fetch타입이_lazy일때_특징() {
+		// 부서영속화
 		Department devDepartment = new Department();
 		devDepartment.setName("software development");
 		entityManager.persist(devDepartment);
 
+		// 사원에 부서설정후 영속화
 		Employee employee = new Employee();
 		employee.setName("NaYunsu");
 		employee.setDepartmentLazy(devDepartment);
 		entityManager.persist(employee);
+		
 		entityManager.flush();
-
 		// 캐시가 아닌 db에서 데이터를 가져오는 것을 보기위해 clear시켰다.
 		entityManager.clear();
 
-		Employee employeeGet = entityManager.find(Employee.class, employee.getId());
-
-		Department departmentGet = employeeGet.getDepartmentLazy();
+		Department departmentGet = entityManager.find(Employee.class, employee.getId())
+				.getDepartmentLazy();
 
 		// 실제 사용하는 departmentGet.getName() 시점에서 Department를 조회해온다.
 		assertEquals("software development", departmentGet.getName());
@@ -61,10 +62,12 @@ public class ManyToOneTest {
 
 	@Test
 	public void 준영속엔티티의_lazy_fetch() {
+		// 부서영속화
 		Department devDepartment = new Department();
 		devDepartment.setName("software development");
 		entityManager.persist(devDepartment);
 
+		// 사원에 부서설정후 영속화
 		Employee employee = new Employee();
 		employee.setName("NaYunsu");
 		employee.setDepartmentLazy(devDepartment);
@@ -83,20 +86,21 @@ public class ManyToOneTest {
 	
 	@Test
 	public void fetch타입이_eager일때_특징() {
+		// 부서 영속화
 		Department devDepartment = new Department();
 		devDepartment.setName("software development");
 		entityManager.persist(devDepartment);
 
+		// 사원에 부서설정후 영속화
 		Employee employee = new Employee();
 		employee.setName("NaYunsu");
 		employee.setDepartmentEager(devDepartment);
 		entityManager.persist(employee);
+		
 		entityManager.flush();
-
-		// 캐시가 아닌 db에서 데이터를 가져오는 것을 보기위해 clear시켰다.
 		entityManager.clear();
 		
-		// left outer join으로 모든 Department정보까지 함께 가져온다.
+		// left outer join으로 모든 Department필드까지 함께 조회해서 가져온다.
 		Employee employeeGet = entityManager.find(Employee.class, employee.getId());
 
 		Department departmentGet = employeeGet.getDepartmentEager();

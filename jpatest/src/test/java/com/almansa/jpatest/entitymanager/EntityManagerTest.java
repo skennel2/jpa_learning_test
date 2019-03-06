@@ -124,15 +124,15 @@ public class EntityManagerTest {
 		entityManager.clear();
 		
 		TypedQuery<Student> query = entityManager
-				.createQuery("SELECT a FROM Student a Where a.firstName = :firstName", Student.class);
-		query.setParameter("firstName", "Na");
+				.createQuery("SELECT a FROM Student a Where a.firstName = :firstName", Student.class)
+				.setParameter("firstName", "Na");
 
 		List<Student> resultList1 = query.getResultList();
 		assertEquals(2, resultList1.size());
 
 		// 하나의 Query 인스턴스로 결과리턴 메소드를 여러번 호출하여도 문제없으며 결과도 동일하다
-		List<Student> resultList = query.getResultList();
-		assertEquals(2, resultList.size());
+		List<Student> resultList2 = query.getResultList();
+		assertEquals(2, resultList2.size());
 	}
 
 	@Test
