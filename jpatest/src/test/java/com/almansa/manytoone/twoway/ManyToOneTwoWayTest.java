@@ -43,7 +43,7 @@ public class ManyToOneTwoWayTest {
 		employee2.setDepartment(department);
 		entityManager.persist(employee2);
 		
-		// 오브젝트의 관점에서도 관계가 잘 설정되었다.
+		// 편의메소드로 오브젝트의 관점에서도 관계가 잘 설정되었다.
 		assertEquals(2, department.getEmployees().size());
 		
 		// flush후 캐시 초기화
@@ -62,14 +62,13 @@ public class ManyToOneTwoWayTest {
 		Employee employeeInDepartment = employees.get(0);
 		employeeInDepartment.setName("gunna");
 		
+		// Update구문이 잘 날라간다.
 		entityManager.flush();
 		
-		int size = entityManager.createQuery("SELECT a FROM Employee a WHERE a.name = :name", Employee.class)
-			.setParameter("name", "gunna")
-			.getResultList()
-			.size();
+		// contains 메소드로 엔티티가 현재 영속상태인지 확인할 수 있다.
+		boolean isManagedEntity = entityManager.contains(employeeInDepartment);
 		
 		// 영속상태인게 확인된다.
-		assertEquals(1, size);
+		assertEquals(true, isManagedEntity);
 	}
 }
