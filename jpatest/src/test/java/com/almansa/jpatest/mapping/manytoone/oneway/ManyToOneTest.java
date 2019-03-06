@@ -1,4 +1,4 @@
-package com.almansa.manytoone.oneway;
+package com.almansa.jpatest.mapping.manytoone.oneway;
 
 import static org.junit.Assert.assertEquals;
 
@@ -82,6 +82,7 @@ public class ManyToOneTest {
 
 		// TODO 예외를 던질거 같은데 잘된다.
 		Department departmentGet = employeeGet.getDepartmentLazy();
+		assertEquals(true, entityManager.contains(departmentGet));
 	}
 	
 	@Test

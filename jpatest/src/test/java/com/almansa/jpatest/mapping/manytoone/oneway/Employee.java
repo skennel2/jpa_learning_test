@@ -1,4 +1,4 @@
-package com.almansa.manytoone.oneway;
+package com.almansa.jpatest.mapping.manytoone.oneway;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

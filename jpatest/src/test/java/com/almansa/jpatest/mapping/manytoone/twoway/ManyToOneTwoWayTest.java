@@ -1,4 +1,4 @@
-package com.almansa.manytoone.twoway;
+package com.almansa.jpatest.mapping.manytoone.twoway;
 
 import static org.junit.Assert.assertEquals;
 
