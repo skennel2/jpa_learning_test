@@ -8,6 +8,7 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -18,53 +19,55 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @ComponentScan(basePackages = { "com.almansa.*" })
 @EnableTransactionManagement
+// Jpa Auditing을 위한 어노테이션. 사용을 위해 Spring Aspects를 프로젝트 의존성에 추가했다.
+@EnableJpaAuditing
 @Configuration
 public class AppConfig {
 
 	@Bean
 	DataSource dataSource() {
-		//AbstractDataSource -> AbstractDriverBasedDataSource -> DriverManagerDataSource
+		// AbstractDataSource -> AbstractDriverBasedDataSource -> DriverManagerDataSource
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:~/dev01");
-        dataSource.setUsername("sa");
+		dataSource.setDriverClassName("org.h2.Driver");
+		dataSource.setUrl("jdbc:h2:~/dev01");
+		dataSource.setUsername("sa");
 
-        return dataSource;
+		return dataSource;
 	}
-	
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws ClassNotFoundException {
-        LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
-        entityManager.setDataSource(dataSource());
-        entityManager.setPackagesToScan("com.almansa.*");
 
-        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        entityManager.setJpaVendorAdapter(vendorAdapter);
-        entityManager.setJpaProperties(additionalProperties());
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws ClassNotFoundException {
+		LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
+		entityManager.setDataSource(dataSource());
+		entityManager.setPackagesToScan("com.almansa.*");
 
-        return entityManager;
-    }
+		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		entityManager.setJpaVendorAdapter(vendorAdapter);
+		entityManager.setJpaProperties(additionalProperties());
 
-    @Bean
-    public PersistenceAnnotationBeanPostProcessor persistenceAnnotationBeanPostProcessor() {
-        return new PersistenceAnnotationBeanPostProcessor();
-    }
+		return entityManager;
+	}
 
-    @Bean
-    public JpaTransactionManager transactionManager(EntityManagerFactory emf) throws ClassNotFoundException {
-        JpaTransactionManager jtm = new JpaTransactionManager();
-        jtm.setEntityManagerFactory(entityManagerFactory().getObject());
+	@Bean
+	public PersistenceAnnotationBeanPostProcessor persistenceAnnotationBeanPostProcessor() {
+		return new PersistenceAnnotationBeanPostProcessor();
+	}
 
-        return jtm;
-    }
-    
-    private Properties additionalProperties() {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("hibernate.format_sql", "true");
-        properties.setProperty("hibernate.id.new_generator_mappings", "true");
-        return properties;
-    }
+	@Bean
+	public JpaTransactionManager transactionManager(EntityManagerFactory emf) throws ClassNotFoundException {
+		JpaTransactionManager jtm = new JpaTransactionManager();
+		jtm.setEntityManagerFactory(entityManagerFactory().getObject());
+
+		return jtm;
+	}
+
+	private Properties additionalProperties() {
+		Properties properties = new Properties();
+		properties.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+		properties.setProperty("hibernate.show_sql", "true");
+		properties.setProperty("hibernate.format_sql", "true");
+		properties.setProperty("hibernate.id.new_generator_mappings", "true");
+		return properties;
+	}
 }
