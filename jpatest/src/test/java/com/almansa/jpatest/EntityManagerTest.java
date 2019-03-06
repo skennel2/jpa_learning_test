@@ -41,11 +41,12 @@ public class EntityManagerTest {
 		employee.setLastName("Yunsu");
 
 		assertEquals(true, Objects.isNull(employee.getId()));
-		
-		// 아래 시점에 시퀀스테이블에서 새로은 PK값을 조회해 엔티티에 채워넣는다.  
-		entityManager.persist(employee);		
+
+		// persist로 객체를 영속상태로 만든다.해당 객체는 영속성 컨테스트에서 관리될 것이다.
+		// 아래 시점에 시퀀스테이블에서 새로은 PK값을 조회해 엔티티에 채워넣는다.
+		entityManager.persist(employee);
 		assertEquals(true, Objects.nonNull(employee.getId()));
-		
+
 		// 실제 Insert구문이 날라간다.
 		entityManager.flush();
 	}
@@ -60,8 +61,8 @@ public class EntityManagerTest {
 
 		entityManager.persist(employee);
 
-		// 아래구문을 제외하니까 예외가 발생하지 않을때가 있다.
-		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.
+		// 아래구문을 제외하니까 예외가 발생하지 않는다.
+		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.		
 		entityManager.flush();
 	}
 
@@ -124,5 +125,38 @@ public class EntityManagerTest {
 		// 하나의 Query 인스턴스로 결과리턴 메소드를 여러번 호출하여도 문제없으며 결과도 동일하다
 		List<Employee> resultList = query.getResultList();
 		assertEquals(2, resultList.size());
+	}
+	
+	@Test
+	public void paging기법_으로_데이터가져오기() {
+		Employee employee = new Employee();
+		employee.setFirstName("Na");
+		employee.setLastName("Yunsu");
+		entityManager.persist(employee);
+		
+		Employee employee2 = new Employee();
+		employee2.setFirstName("Na");
+		employee2.setLastName("Jinsu");
+		entityManager.persist(employee2);		
+		
+		Employee employee3 = new Employee();
+		employee3.setFirstName("Kim");
+		employee3.setLastName("Yunmi");
+		entityManager.persist(employee3);
+		
+		Employee employee4 = new Employee();
+		employee4.setFirstName("Na");
+		employee4.setLastName("Jangsu");
+		entityManager.persist(employee4);		
+		
+		TypedQuery<Employee> query = entityManager
+				.createQuery("SELECT a FROM Employee a Where a.firstName = :firstName", Employee.class)
+				.setParameter("firstName", "Na")
+				.setFirstResult(1)
+				.setMaxResults(2);			
+		List<Employee> employees = query.getResultList();
+		
+		assertEquals("Jinsu", employees.get(0).getLastName());
+		assertEquals("Jangsu", employees.get(1).getLastName());
 	}
 }
