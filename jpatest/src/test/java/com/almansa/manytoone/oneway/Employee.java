@@ -18,8 +18,12 @@ public class Employee {
 	private String name;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	@JoinColumn(name = "department_id")
-	private Department department;
+	@JoinColumn(name = "department_lazy_id")
+	private Department departmentLazy;
+
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "department_eager_id")
+	private Department departmentEager;
 
 	public Long getId() {
 		return id;
@@ -37,12 +41,20 @@ public class Employee {
 		this.name = name;
 	}
 
-	public Department getDepartment() {
-		return department;
+	public Department getDepartmentLazy() {
+		return departmentLazy;
 	}
 
-	public void setDepartment(Department department) {
-		this.department = department;
+	public void setDepartmentLazy(Department departmentLazy) {
+		this.departmentLazy = departmentLazy;
+	}
+
+	public Department getDepartmentEager() {
+		return departmentEager;
+	}
+
+	public void setDepartmentEager(Department departmentEager) {
+		this.departmentEager = departmentEager;
 	}
 
 }
