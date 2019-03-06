@@ -43,11 +43,9 @@ public class Employee {
 		return department;
 	}
 
-	/**
+	/*
 	 * 사원의 소속부서를 설정해주는 메소드에 기존 부서에서 자신을 제거하고 
 	 * 새로운 부서에 자신을 소속시키는 로직을 넣음으로써 양방향 관계설정을 간편하게 해준다.	
-	 * 
-	 * @param department
 	 */
 	public void setDepartment(Department department) {
 		Employee me = this;

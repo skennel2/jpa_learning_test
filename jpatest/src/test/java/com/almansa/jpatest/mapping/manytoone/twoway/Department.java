@@ -20,9 +20,11 @@ public class Department {
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
-	// mappedBy는 연관관계의 주인 엔티티의 매핑되는'필드'명이 들어와야 한다.
-	// 연관관계 주인 엔티티의 의미는 데이터 베이스 테이블상에서 FK 필드를 가지고 있는 테이블의 엔티티를 말한다. 
-	// 잘못 설정한다면 EntityManagerFactory를 생성하는 중 에러가 발생한다.
+	/*
+	 * mappedBy는 연관관계의 주인 엔티티의 매핑되는'필드'명이 들어와야 한다.
+	 * 연관관계 주인 엔티티의 의미는 데이터 베이스 테이블상에서 FK 필드를 가지고 있는 테이블의 엔티티를 말한다. 
+	 * 잘못 설정한다면 EntityManagerFactory를 생성하는 중 에러가 발생한다.
+	 */
 	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
 	private List<Employee> employees;
 

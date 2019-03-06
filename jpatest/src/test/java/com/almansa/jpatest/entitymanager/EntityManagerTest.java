@@ -42,8 +42,11 @@ public class EntityManagerTest {
 
 		assertEquals(true, Objects.isNull(student.getId()));
 
-		// persist로 객체를 영속상태로 만든다.해당 객체는 영속성 컨테스트에서 관리될 것이다.
-		// 아래 시점에 시퀀스테이블에서 새로은 PK값을 조회해 엔티티에 채워넣는다.
+		/*
+		 * persist로 객체를 영속상태로 만든다.해당 객체는 영속성 컨테스트에서 관리될 것이다.
+		 * 아래 시점에 시퀀스테이블에서 새로은 PK값을 조회해 엔티티에 채워넣는다.
+		 * 
+		 */
 		entityManager.persist(student);
 		assertEquals(true, Objects.nonNull(student.getId()));
 
@@ -61,8 +64,10 @@ public class EntityManagerTest {
 
 		entityManager.persist(student);
 
-		// 아래구문을 제외하니까 예외가 발생하지 않는다.
-		// persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.
+		/*
+		 * 아래구문을 제외하니까 예외가 발생하지 않는다. 
+		 * persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.
+		 */
 		entityManager.flush();
 	}
 
@@ -103,8 +108,10 @@ public class EntityManagerTest {
 		TypedQuery<Student> query = entityManager
 				.createQuery("SELECT a FROM Student a Where a.firstName = :firstName", Student.class);
 		query.setParameter("firstName", "Na");
-
-		// 실제 데이터베이스에서 가져온 것은 2개지만 getSingleResult 호출하니 NonUniqueResultException을 던진다.
+		
+		/*
+		 * 실제 데이터베이스에서 가져온 것은 2개지만 getSingleResult 호출하니 NonUniqueResultException을 던진다.
+		 */
 		query.getSingleResult();
 	}
 
@@ -202,8 +209,11 @@ public class EntityManagerTest {
 
 		entityManager.merge(student);			
 		
-		// insert구문이 정상적으로 날아간다.
-		// 병합은 준영속, 비영속을 신경쓰지 않는다. 
+		/*
+		 * insert구문이 정상적으로 날아간다.
+		 * 병합은 준영속, 비영속을 신경쓰지 않는다. 
+		 * 
+		 */
 		entityManager.flush();
 	}
 	
