@@ -5,6 +5,7 @@ import java.util.Objects;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
+//autoApply = true 속성을 주면 모든 클로벌 설정으로 모든 EmailAddress에 동일한 컨버팅을 진행한다.
 @Converter
 public class EmailAddressConverter implements AttributeConverter<EmailAddress, String> {
 

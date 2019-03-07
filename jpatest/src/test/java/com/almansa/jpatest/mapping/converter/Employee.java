@@ -15,6 +15,7 @@ public class Employee {
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 
+	// 컨버터클래스가 autoApply = true로 설정되어있으면 아래 어노테이션은 필요없다.
 	@Convert(converter = EmailAddressConverter.class)
 	@Column(name = "email_address", length = 100, nullable = true)
 	private EmailAddress emailAddress;
