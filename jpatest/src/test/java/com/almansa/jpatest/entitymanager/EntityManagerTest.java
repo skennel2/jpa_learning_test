@@ -43,8 +43,8 @@ public class EntityManagerTest {
 		assertEquals(true, Objects.isNull(student.getId()));
 
 		/*
-		 * persist로 객체를 영속상태로 만든다.해당 객체는 영속성 컨테스트에서 관리될 것이다.
-		 * 아래 시점에 시퀀스테이블에서 새로은 PK값을 조회해 엔티티에 채워넣는다.
+		 * persist로 객체를 영속상태로 만든다.해당 객체는 영속성 컨테스트에서 관리될 것이다. 아래 시점에 시퀀스테이블에서 새로은 PK값을
+		 * 조회해 엔티티에 채워넣는다.
 		 * 
 		 */
 		entityManager.persist(student);
@@ -65,8 +65,7 @@ public class EntityManagerTest {
 		entityManager.persist(student);
 
 		/*
-		 * 아래구문을 제외하니까 예외가 발생하지 않는다. 
-		 * persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.
+		 * 아래구문을 제외하니까 예외가 발생하지 않는다. persist()까지는 1차캐시에서 관리되고 실제 DB와 동기화되지 않는다.
 		 */
 		entityManager.flush();
 	}
@@ -77,10 +76,10 @@ public class EntityManagerTest {
 		student.setFirstName("Na");
 		student.setLastName("Yunsu");
 		entityManager.persist(student);
-		
+
 		entityManager.flush();
 		entityManager.clear();
-		
+
 		TypedQuery<Student> query = entityManager.createQuery("SELECT a FROM Student a Where a.lastName = :lastName",
 				Student.class);
 
@@ -104,11 +103,11 @@ public class EntityManagerTest {
 
 		entityManager.flush();
 		entityManager.clear();
-		
-		TypedQuery<Student> query = entityManager
-				.createQuery("SELECT a FROM Student a Where a.firstName = :firstName", Student.class);
+
+		TypedQuery<Student> query = entityManager.createQuery("SELECT a FROM Student a Where a.firstName = :firstName",
+				Student.class);
 		query.setParameter("firstName", "Na");
-		
+
 		/*
 		 * 실제 데이터베이스에서 가져온 것은 2개지만 getSingleResult 호출하니 NonUniqueResultException을 던진다.
 		 */
@@ -129,7 +128,7 @@ public class EntityManagerTest {
 
 		entityManager.flush();
 		entityManager.clear();
-		
+
 		TypedQuery<Student> query = entityManager
 				.createQuery("SELECT a FROM Student a Where a.firstName = :firstName", Student.class)
 				.setParameter("firstName", "Na");
@@ -166,13 +165,11 @@ public class EntityManagerTest {
 
 		entityManager.flush();
 		entityManager.clear();
-		
+
 		// fluent스타일의 API를 제공한다.
 		TypedQuery<Student> query = entityManager
 				.createQuery("SELECT a FROM Student a Where a.firstName = :firstName", Student.class)
-				.setParameter("firstName", "Na")
-				.setFirstResult(1)
-				.setMaxResults(2);
+				.setParameter("firstName", "Na").setFirstResult(1).setMaxResults(2);
 		List<Student> students = query.getResultList();
 
 		assertEquals("Jinsu", students.get(0).getLastName());
@@ -190,19 +187,19 @@ public class EntityManagerTest {
 		entityManager.persist(student);
 		assertEquals(true, Objects.nonNull(student.getId()));
 
-		// 준영속상태. Id는 계속 남아있다. 
+		// 준영속상태. Id는 계속 남아있다.
 		entityManager.detach(student);
 		assertEquals(true, Objects.nonNull(student.getId()));
 		student.setLastName("Jinsu");
-		
+
 		// 영속상태. 준영속상태의 엔티티를 다시 영속상태로 만든다.
-		entityManager.merge(student);		
-		
+		entityManager.merge(student);
+
 		// TODO 여기서 아래 예외가 터지는데 이유를 모르겠다.
-		//org.hibernate.AssertionFailure: possible non-threadsafe access to session	
+		// org.hibernate.AssertionFailure: possible non-threadsafe access to session
 		entityManager.flush();
 	}
-	
+
 	@Test
 	public void 비영속객체를_merge시킨다면() {
 		// 비영속. 순수 자바객체
@@ -210,29 +207,48 @@ public class EntityManagerTest {
 		student.setFirstName("Na");
 		student.setLastName("Yunsu");
 
-		entityManager.merge(student);			
-		
+		entityManager.merge(student);
+
 		/*
-		 * insert구문이 정상적으로 날아간다.
-		 * 병합은 준영속, 비영속을 신경쓰지 않는다. 
+		 * insert구문이 정상적으로 날아간다. 병합은 준영속, 비영속을 신경쓰지 않는다.
 		 * 
 		 */
 		entityManager.flush();
 	}
-	
+
 	@Test
 	public void detach후_update감지_실험() {
 		Student student = new Student();
 		student.setFirstName("Na");
 		student.setLastName("Yunsu");
-		
+
 		entityManager.persist(student);
 		entityManager.flush();
-		
-		entityManager.detach(student);		
+
+		entityManager.detach(student);
+		student.setLastName("Jinsu");
+
+		Student studentGet = entityManager.find(Student.class, student.getId());
+		assertEquals("Yunsu", studentGet.getLastName());
+	}
+
+	@Test
+	public void getReference로_지연로딩() {
+		Student student = new Student();
+		student.setFirstName("Na");
+		student.setLastName("Yunsu");
+
+		entityManager.persist(student);
+		entityManager.flush();
+
+		entityManager.detach(student);
 		student.setLastName("Jinsu");
 		
-		Student studentGet = entityManager.find(Student.class, student.getId());		
+		// 여기까지는 조회 쿼리를 날리지 않는다.
+		// 프록시 객체만 가져올 뿐이다.
+		Student studentGet = entityManager.getReference(Student.class, student.getId());
+		
+		// 실제 사용하는 시점에 조회 쿼리를 날린다.
 		assertEquals("Yunsu", studentGet.getLastName());
 	}
 }
