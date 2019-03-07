@@ -197,6 +197,9 @@ public class EntityManagerTest {
 		
 		// 영속상태. 준영속상태의 엔티티를 다시 영속상태로 만든다.
 		entityManager.merge(student);		
+		
+		// TODO 여기서 아래 예외가 터지는데 이유를 모르겠다.
+		//org.hibernate.AssertionFailure: possible non-threadsafe access to session	
 		entityManager.flush();
 	}
 	
