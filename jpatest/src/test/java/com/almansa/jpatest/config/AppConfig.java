@@ -17,6 +17,8 @@ import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcesso
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.almansa.jpatest.interceptor.CustomEmptyInterceptor;
+
 @ComponentScan(basePackages = { "com.almansa.*" })
 @EnableTransactionManagement
 // Jpa Auditing을 위한 어노테이션. 사용을 위해 Spring Aspects를 프로젝트 의존성에 추가했다.
@@ -40,11 +42,11 @@ public class AppConfig {
 		LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
 		entityManager.setDataSource(dataSource());
 		entityManager.setPackagesToScan("com.almansa.*");
-
+		
 		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		entityManager.setJpaVendorAdapter(vendorAdapter);
 		entityManager.setJpaProperties(additionalProperties());
-
+		
 		return entityManager;
 	}
 
@@ -60,6 +62,12 @@ public class AppConfig {
 
 		return jtm;
 	}
+	
+
+	@Bean
+	public CustomEmptyInterceptor customEmptyInterceptor(){
+		return new CustomEmptyInterceptor();
+	}
 
 	private Properties additionalProperties() {
 		Properties properties = new Properties();
@@ -68,6 +76,7 @@ public class AppConfig {
 		properties.setProperty("hibernate.show_sql", "true");
 		properties.setProperty("hibernate.format_sql", "true");
 		properties.setProperty("hibernate.id.new_generator_mappings", "true");
+		properties.put("hibernate.ejb.interceptor", customEmptyInterceptor());
 		return properties;
 	}
 }
