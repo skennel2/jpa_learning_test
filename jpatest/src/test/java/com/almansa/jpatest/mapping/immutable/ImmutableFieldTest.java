@@ -22,6 +22,10 @@ public class ImmutableFieldTest {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	/**
+	 * 결과적으로 Immmutable 어노테이션을 붙인 엔티티는 특별한 로깅이나 예외없이  Update동작을 무시한다. 
+	 * 실제로도 Immutable한 객체에 마커 인터페이스정도로 사용하는게 좋아보인다. 
+	 */
 	@Test
 	public void Immutable_어노테이션을_붙인_엔티티() {
 		Employee employee = new Employee();
