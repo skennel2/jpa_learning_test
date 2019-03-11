@@ -13,6 +13,11 @@ import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
 
+/**
+ * 엔티티의 Id 필드에 @GenericGenerator 어노테이션을 이용해 해당 IdentifierGenerator를 등록해준다.
+ * @author skennel
+ *
+ */
 public class UUIDIdentifierGenerator implements IdentifierGenerator, Configurable {
 
 	private String prefix;
