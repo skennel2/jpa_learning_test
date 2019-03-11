@@ -1,4 +1,4 @@
-package com.almansa.jpatest.mapping.id;
+package com.almansa.jpatest.mapping.hibernate.id;
 
 import java.io.Serializable;
 import java.util.Properties;
@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;

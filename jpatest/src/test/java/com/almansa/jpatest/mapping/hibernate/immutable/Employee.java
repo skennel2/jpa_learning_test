@@ -1,4 +1,4 @@
-package com.almansa.jpatest.mapping.immutable;
+package com.almansa.jpatest.mapping.hibernate.immutable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

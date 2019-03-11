@@ -1,4 +1,4 @@
-package com.almansa.jpatest.mapping.id;
+package com.almansa.jpatest.mapping.hibernate.id;
 
 import static org.junit.Assert.assertEquals;
 

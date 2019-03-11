@@ -1,4 +1,4 @@
-package com.almansa.jpatest.mapping.immutable;
+package com.almansa.jpatest.mapping.hibernate.immutable;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

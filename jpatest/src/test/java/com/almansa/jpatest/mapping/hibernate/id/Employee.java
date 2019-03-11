@@ -1,4 +1,4 @@
-package com.almansa.jpatest.mapping.id;
+package com.almansa.jpatest.mapping.hibernate.id;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ public class Employee {
 	@Id
 	@GeneratedValue(generator = "id_generator")
 	@GenericGenerator(name = "id_generator", 
-		strategy = "com.almansa.jpatest.mapping.id.UUIDIdentifierGenerator", 
+		strategy = "com.almansa.jpatest.mapping.hibernate.id.UUIDIdentifierGenerator", 
 		parameters = @Parameter(name = "prefix", value = "pk_"))
 	private String id;
 
