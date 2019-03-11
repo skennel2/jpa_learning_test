@@ -33,7 +33,7 @@ public class AppConfig {
 		dataSource.setDriverClassName("org.h2.Driver");
 		dataSource.setUrl("jdbc:h2:~/dev01");
 		dataSource.setUsername("sa");
-
+	
 		return dataSource;
 	}
 
