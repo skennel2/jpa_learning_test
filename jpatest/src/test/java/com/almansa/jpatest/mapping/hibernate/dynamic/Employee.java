@@ -29,8 +29,8 @@ public class Employee {
 	private int taxInPercents;
 	
 	/*
-	 *  문자열값에 따라 동적으로 필드값을 세팅해준다. 
-	 *  DB값 기준임에 유의.
+	 *  데이터 베이스에서 값을 가져오는 시점에 어노테이션 표현식에 따라 필드값을 가져온다.
+	 *  DB값 기준임에 유의. DB종속적인 함수등의 사용에 제한이 없다. 
 	 *  readonly field에 어울린다.
 	 *  DB에 실제 컬럼이 생기는 것은 아니다.
 	 *  
