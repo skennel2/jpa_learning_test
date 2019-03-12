@@ -1,5 +1,5 @@
 # jpa_learning_test
-JPA 학습테스트 
+JPA, Hibernate 학습테스트
 
 ## Relevant articles:
 
