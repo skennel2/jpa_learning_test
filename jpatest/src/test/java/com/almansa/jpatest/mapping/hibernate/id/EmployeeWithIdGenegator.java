@@ -9,7 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 @Entity
-public class Employee {
+public class EmployeeWithIdGenegator {
 	@Id
 	@GeneratedValue(generator = "id_generator")
 	@GenericGenerator(name = "id_generator", 

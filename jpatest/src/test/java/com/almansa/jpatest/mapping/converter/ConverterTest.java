@@ -24,7 +24,7 @@ public class ConverterTest {
 
 	@Test
 	public void 컨버트필드가_있는_엔티티저장후_가져오기테스트() {
-		Employee employee = new Employee();
+		EmployeeWithEmail employee = new EmployeeWithEmail();
 		employee.setName("NaYunsu");
 		employee.setEmailAddress(new EmailAddress("skennel2@gmail.com"));
 		entityManager.persist(employee);
@@ -33,7 +33,7 @@ public class ConverterTest {
 		entityManager.flush();
 		entityManager.clear();
 
-		Employee employeeGet = entityManager.find(Employee.class, employee.getId());
+		EmployeeWithEmail employeeGet = entityManager.find(EmployeeWithEmail.class, employee.getId());
 		assertEquals("skennel2@gmail.com", employeeGet.getEmailAddress().getEmailStringValue());
 	}
 }

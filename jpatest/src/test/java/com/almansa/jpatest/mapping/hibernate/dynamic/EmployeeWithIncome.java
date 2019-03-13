@@ -14,7 +14,7 @@ import org.hibernate.annotations.Where;
  * DB값 기준임에 유의 
  */
 @Where(clause = "is_deleted = false") 
-public class Employee {
+public class EmployeeWithIncome {
 	@Id
 	@GeneratedValue
 	private Long id;

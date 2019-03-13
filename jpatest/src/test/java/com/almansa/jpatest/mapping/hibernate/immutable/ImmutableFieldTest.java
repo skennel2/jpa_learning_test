@@ -28,7 +28,7 @@ public class ImmutableFieldTest {
 	 */
 	@Test
 	public void Immutable_어노테이션을_붙인_엔티티() {
-		Employee employee = new Employee();
+		ImmutableEmployee employee = new ImmutableEmployee();
 		employee.setName("NaYunsu");
 
 		entityManager.persist(employee);
@@ -37,7 +37,7 @@ public class ImmutableFieldTest {
 		entityManager.clear();
 
 		// 업데이트 작업검
-		Employee employeeForUpdate = entityManager.find(Employee.class, employee.getId());
+		ImmutableEmployee employeeForUpdate = entityManager.find(ImmutableEmployee.class, employee.getId());
 		employeeForUpdate.setName("NaJinsu");
 
 		// 오브젝트 수준에서는 필드값이 변경되었다.
@@ -45,7 +45,7 @@ public class ImmutableFieldTest {
 
 		// 캐시에서 오브젝트를 가져와서 검증한다.
 		// 캐시에도 변한 값이 들어가 있다.
-		Employee employeeInCache = entityManager.find(Employee.class, employee.getId());
+		ImmutableEmployee employeeInCache = entityManager.find(ImmutableEmployee.class, employee.getId());
 		assertEquals("NaJinsu", employeeInCache.getName());
 
 		// 캐시클리어
@@ -54,7 +54,7 @@ public class ImmutableFieldTest {
 
 		// 업데이트 추적이 이루어지지 않았다.
 		// 별다른 예외없이 업데이트 작업이 무시되었다.
-		Employee employeeForCheckUpdate = entityManager.find(Employee.class, employee.getId());
+		ImmutableEmployee employeeForCheckUpdate = entityManager.find(ImmutableEmployee.class, employee.getId());
 		assertEquals("NaYunsu", employeeForCheckUpdate.getName());
 
 		// 삭제작업 검증
@@ -64,7 +64,7 @@ public class ImmutableFieldTest {
 		entityManager.clear();
 		
 		// 삭제작업은 Immutable 어노테이션과 관계없이 잘 동작한다.
-		Employee employeeForCheckDelete = entityManager.find(Employee.class, employee.getId());
+		ImmutableEmployee employeeForCheckDelete = entityManager.find(ImmutableEmployee.class, employee.getId());
 		assertEquals(true, employeeForCheckDelete == null);
 	}
 }

@@ -27,7 +27,7 @@ public class DynamicMappingTest {
 
 	@Test
 	public void fomula테스트() {
-		Employee employee = new Employee();
+		EmployeeWithIncome employee = new EmployeeWithIncome();
 		employee.setName("NaYunsu");
 		employee.setGrossIncome(300000);
 		employee.setTaxInPercents(10);
@@ -37,14 +37,14 @@ public class DynamicMappingTest {
 		entityManager.flush();
 		entityManager.clear();
 
-		Employee employeeGet = entityManager.find(Employee.class, employee.getId());
+		EmployeeWithIncome employeeGet = entityManager.find(EmployeeWithIncome.class, employee.getId());
 		long tax = employeeGet.getTax();
 		assertEquals(30000, tax);
 	}
 
 	@Test
 	public void where테스트() {
-		Employee employee = new Employee();
+		EmployeeWithIncome employee = new EmployeeWithIncome();
 		employee.setName("NaYunsu");
 		employee.setGrossIncome(300000);
 		employee.setTaxInPercents(10);
@@ -54,14 +54,14 @@ public class DynamicMappingTest {
 		entityManager.flush();
 		entityManager.clear();
 
-		Employee employeeGet = entityManager.find(Employee.class, employee.getId());
+		EmployeeWithIncome employeeGet = entityManager.find(EmployeeWithIncome.class, employee.getId());
 
 		assertEquals(null, employeeGet);
 	}
 
 	@Test
 	public void where테스트_jpql로_가져온다면() {
-		Employee employee = new Employee();
+		EmployeeWithIncome employee = new EmployeeWithIncome();
 		employee.setName("NaYunsu");
 		employee.setGrossIncome(300000);
 		employee.setTaxInPercents(10);
@@ -71,11 +71,11 @@ public class DynamicMappingTest {
 		entityManager.flush();
 		entityManager.clear();
 
-		TypedQuery<Employee> query = entityManager.createQuery("select a from Employee a where is_deleted = :del",
-				Employee.class);
+		TypedQuery<EmployeeWithIncome> query = entityManager.createQuery("select a from Employee a where is_deleted = :del",
+				EmployeeWithIncome.class);
 		query.setParameter("del", true);
 
-		List<Employee> resultList = query.getResultList();
+		List<EmployeeWithIncome> resultList = query.getResultList();
 
 		// 엔티티의 @Where어노테이션은 무시되지 않는다.
 		// Native 쿼리를 쓰는 방법말고는 없는듯하다.

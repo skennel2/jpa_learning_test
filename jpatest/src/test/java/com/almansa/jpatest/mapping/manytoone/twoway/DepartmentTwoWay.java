@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Department {
+public class DepartmentTwoWay {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -26,9 +26,9 @@ public class Department {
 	 * 잘못 설정한다면 EntityManagerFactory를 생성하는 중 에러가 발생한다.
 	 */
 	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-	private List<Employee> employees;
+	private List<EmployeeWithDepartmentTwoWay> employees;
 
-	public Department() {
+	public DepartmentTwoWay() {
 		super();
 		this.employees = new ArrayList<>();
 	}
@@ -49,11 +49,11 @@ public class Department {
 		this.name = name;
 	}
 
-	protected List<Employee> getEmployees() {
+	protected List<EmployeeWithDepartmentTwoWay> getEmployees() {
 		return employees;
 	}
 
-	public void setEmployees(List<Employee> employees) {
+	public void setEmployees(List<EmployeeWithDepartmentTwoWay> employees) {
 		if(Objects.isNull(employees)) {
 			throw new NullPointerException("employees");
 		}

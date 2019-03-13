@@ -1,12 +1,15 @@
-package com.almansa.jpatest.mapping.manytoone.oneway;
+package com.almansa.jpatest.mapping.hibernate.immutable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Immutable;
+
 @Entity
-public class Department {
+@Immutable
+public class ImmutableEmployee {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -29,5 +32,4 @@ public class Department {
 	public void setName(String name) {
 		this.name = name;
 	}
-
 }
