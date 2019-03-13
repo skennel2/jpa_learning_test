@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity
-public class EmployeeWithDepartmentOneWay {
+@Entity(name="EmployeeOw")
+public class Employee {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -19,11 +19,11 @@ public class EmployeeWithDepartmentOneWay {
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "department_lazy_id")
-	private DepartmentOneWay departmentLazy;
+	private Department departmentLazy;
 
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "department_eager_id")
-	private DepartmentOneWay departmentEager;
+	private Department departmentEager;
 
 	public Long getId() {
 		return id;
@@ -41,19 +41,19 @@ public class EmployeeWithDepartmentOneWay {
 		this.name = name;
 	}
 
-	public DepartmentOneWay getDepartmentLazy() {
+	public Department getDepartmentLazy() {
 		return departmentLazy;
 	}
 
-	public void setDepartmentLazy(DepartmentOneWay departmentLazy) {
+	public void setDepartmentLazy(Department departmentLazy) {
 		this.departmentLazy = departmentLazy;
 	}
 
-	public DepartmentOneWay getDepartmentEager() {
+	public Department getDepartmentEager() {
 		return departmentEager;
 	}
 
-	public void setDepartmentEager(DepartmentOneWay departmentEager) {
+	public void setDepartmentEager(Department departmentEager) {
 		this.departmentEager = departmentEager;
 	}
 

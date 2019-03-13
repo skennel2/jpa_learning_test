@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
-@Entity
-public class EmployeeWithIdGenegator {
+@Entity(name = "EmployeeGenId")
+public class Employee {
 	@Id
 	@GeneratedValue(generator = "id_generator")
 	@GenericGenerator(name = "id_generator", 

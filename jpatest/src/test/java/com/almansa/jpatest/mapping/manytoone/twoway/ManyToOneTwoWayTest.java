@@ -27,18 +27,18 @@ public class ManyToOneTwoWayTest {
 	@Test
 	public void 양방향관계_엔티티() {
 		// 부서 추가
-		DepartmentTwoWay department = new DepartmentTwoWay();
+		Department department = new Department();
 		department.setName("RND");
 		entityManager.persist(department);
 
 		// 사원1 추가 부서 세팅
-		EmployeeWithDepartmentTwoWay employee = new EmployeeWithDepartmentTwoWay();
+		Employee employee = new Employee();
 		employee.setName("Nayunsu");
 		employee.setDepartment(department);
 		entityManager.persist(employee);
 
 		// 사원2 추가 부서 세팅
-		EmployeeWithDepartmentTwoWay employee2 = new EmployeeWithDepartmentTwoWay();
+		Employee employee2 = new Employee();
 		employee2.setName("Najinsu");
 		employee2.setDepartment(department);
 		entityManager.persist(employee2);
@@ -50,16 +50,16 @@ public class ManyToOneTwoWayTest {
 		entityManager.flush();
 		entityManager.clear();
 		
-		DepartmentTwoWay departmentGet = entityManager.find(DepartmentTwoWay.class, department.getId());
+		Department departmentGet = entityManager.find(Department.class, department.getId());
 		
 		// 이 시점에 Employee 테이블을 조회한다. 
 		// 정상적으로 잘가져온다.
-		List<EmployeeWithDepartmentTwoWay> employees = departmentGet.getEmployees();
+		List<Employee> employees = departmentGet.getEmployees();
 		assertEquals(2, employees.size());
 		
 		// 영속상태인 Department를 통해 가져온 Employee는 영속상태인가? 
 		// 영속상태라면 변경추적으로 Update가 이루어질 것이다.
-		EmployeeWithDepartmentTwoWay employeeInDepartment = employees.get(0);
+		Employee employeeInDepartment = employees.get(0);
 		employeeInDepartment.setName("gunna");
 		
 		// Update구문이 잘 날라간다.

@@ -16,6 +16,8 @@ import org.hibernate.type.Type;
  */
 public class CustomInterceptor implements Interceptor, Serializable{
 
+	private static final long serialVersionUID = 4925345947954801381L;
+
 	@Override
 	public boolean onLoad(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types)
 			throws CallbackException {

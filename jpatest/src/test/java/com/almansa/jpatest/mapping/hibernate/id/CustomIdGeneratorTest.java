@@ -27,7 +27,7 @@ public class CustomIdGeneratorTest {
 
 	@Test
 	public void Id생성전략을_custom한_엔티티_저장() {
-		EmployeeWithIdGenegator employee = new EmployeeWithIdGenegator();
+		Employee employee = new Employee();
 		employee.setName("NaYunsu");
 		
 		entityManager.persist(employee);

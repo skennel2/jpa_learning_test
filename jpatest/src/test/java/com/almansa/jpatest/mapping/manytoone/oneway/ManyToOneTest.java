@@ -24,11 +24,11 @@ public class ManyToOneTest {
 
 	@Test
 	public void 다대일관계_엔티티_저장하기() {
-		DepartmentOneWay devDepartment = new DepartmentOneWay();
+		Department devDepartment = new Department();
 		devDepartment.setName("software development");
 		entityManager.persist(devDepartment);
 
-		EmployeeWithDepartmentOneWay employee = new EmployeeWithDepartmentOneWay();
+		Employee employee = new Employee();
 		employee.setDepartmentLazy(devDepartment);
 		employee.setName("NaYunsu");
 		entityManager.persist(employee);
@@ -39,12 +39,12 @@ public class ManyToOneTest {
 	@Test
 	public void fetch타입이_lazy일때_특징() {
 		// 부서영속화
-		DepartmentOneWay devDepartment = new DepartmentOneWay();
+		Department devDepartment = new Department();
 		devDepartment.setName("software development");
 		entityManager.persist(devDepartment);
 
 		// 사원에 부서설정후 영속화
-		EmployeeWithDepartmentOneWay employee = new EmployeeWithDepartmentOneWay();
+		Employee employee = new Employee();
 		employee.setName("NaYunsu");
 		employee.setDepartmentLazy(devDepartment);
 		entityManager.persist(employee);
@@ -53,7 +53,7 @@ public class ManyToOneTest {
 		// 캐시가 아닌 db에서 데이터를 가져오는 것을 보기위해 clear시켰다.
 		entityManager.clear();
 
-		DepartmentOneWay departmentGet = entityManager.find(EmployeeWithDepartmentOneWay.class, employee.getId())
+		Department departmentGet = entityManager.find(Employee.class, employee.getId())
 				.getDepartmentLazy();
 
 		// 실제 사용하는 departmentGet.getName() 시점에서 Department를 조회해온다.
@@ -63,12 +63,12 @@ public class ManyToOneTest {
 	@Test
 	public void 준영속엔티티의_lazy_fetch() {
 		// 부서영속화
-		DepartmentOneWay devDepartment = new DepartmentOneWay();
+		Department devDepartment = new Department();
 		devDepartment.setName("software development");
 		entityManager.persist(devDepartment);
 
 		// 사원에 부서설정후 영속화
-		EmployeeWithDepartmentOneWay employee = new EmployeeWithDepartmentOneWay();
+		Employee employee = new Employee();
 		employee.setName("NaYunsu");
 		employee.setDepartmentLazy(devDepartment);
 		entityManager.persist(employee);
@@ -76,24 +76,24 @@ public class ManyToOneTest {
 		entityManager.flush();
 		entityManager.clear();
 
-		EmployeeWithDepartmentOneWay employeeGet = entityManager.find(EmployeeWithDepartmentOneWay.class, employee.getId());
+		Employee employeeGet = entityManager.find(Employee.class, employee.getId());
 
 		entityManager.detach(employeeGet);
 
 		// TODO 예외를 던질거 같은데 잘된다.
-		DepartmentOneWay departmentGet = employeeGet.getDepartmentLazy();
+		Department departmentGet = employeeGet.getDepartmentLazy();
 		assertEquals(true, entityManager.contains(departmentGet));
 	}
 	
 	@Test
 	public void fetch타입이_eager일때_특징() {
 		// 부서 영속화
-		DepartmentOneWay devDepartment = new DepartmentOneWay();
+		Department devDepartment = new Department();
 		devDepartment.setName("software development");
 		entityManager.persist(devDepartment);
 
 		// 사원에 부서설정후 영속화
-		EmployeeWithDepartmentOneWay employee = new EmployeeWithDepartmentOneWay();
+		Employee employee = new Employee();
 		employee.setName("NaYunsu");
 		employee.setDepartmentEager(devDepartment);
 		entityManager.persist(employee);
@@ -102,9 +102,9 @@ public class ManyToOneTest {
 		entityManager.clear();
 		
 		// left outer join으로 모든 Department필드까지 함께 조회해서 가져온다.
-		EmployeeWithDepartmentOneWay employeeGet = entityManager.find(EmployeeWithDepartmentOneWay.class, employee.getId());
+		Employee employeeGet = entityManager.find(Employee.class, employee.getId());
 
-		DepartmentOneWay departmentGet = employeeGet.getDepartmentEager();
+		Department departmentGet = employeeGet.getDepartmentEager();
 		assertEquals("software development", departmentGet.getName());
 	}
 }
