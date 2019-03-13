@@ -34,7 +34,7 @@ public class JPQLTest {
 		Person personFind = entityManager.find(Person.class, person.getId());
 		assertEquals(true, person == personFind);
 
-		// JPQL로 조회하면 무조건 DB에서 조해해서 1차캐시에 적재한다. 
+		// JPQL로 조회하면 무조건 DB에서 조회해서 1차캐시에 적재한다. 
 		// 적재시 같은 엔티티가 존재하면 조회한것으로 대체한다.
 		Person personJPQL = entityManager.createQuery("SELECT a FROM Person a WHERE a.id = :id", Person.class)
 				.setParameter("id", person.getId())
