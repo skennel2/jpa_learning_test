@@ -8,7 +8,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+// TODO strategy = InheritanceType.SINGLE_TABLE, JOIND, TABLE_PER_CLASS 바꿔 보면서 Table 구조가 어떻게 달라지는지 살펴볼 것
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Product {
 	@Id
 	@GeneratedValue

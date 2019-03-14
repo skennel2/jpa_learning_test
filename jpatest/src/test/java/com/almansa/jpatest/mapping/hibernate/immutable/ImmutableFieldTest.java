@@ -36,7 +36,7 @@ public class ImmutableFieldTest {
 		entityManager.flush();
 		entityManager.clear();
 
-		// 업데이트 작업검
+		// 업데이트 작업검증
 		Employee employeeForUpdate = entityManager.find(Employee.class, employee.getId());
 		employeeForUpdate.setName("NaJinsu");
 
